@@ -240,19 +240,8 @@ function imprimirAtaques(){
 function secuenciaAtaque(){
     botones.forEach((boton)=>{
         boton.addEventListener("click",(e)=>{
-            // if(e.target.textContent == '🔥'){
-                
-            // }
-            // secuenciaAtaquesJugador.push(e.target.textContent)
-            // boton.style.display = "none"
-            if(e.target.textContent == '🔥'){
-                ataqueFuego()
-            }else if (e.target.textContent == '💧'){
-                ataqueAgua()
-            }
-            else{
-                ataqueTierra()
-            }
+            secuenciaAtaquesJugador.push(e.target.textContent)
+            boton.style.display = "none"
         })
     })
 }
