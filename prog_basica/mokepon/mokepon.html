@@ -54,11 +54,6 @@
             </label--> 
         </div>
 
-        <!--Intento con radio --> 
-        
-            
-            
-                
         <!-- uso de select
 
         <select name="" id="mascota">
@@ -73,11 +68,18 @@
         
         <button id="boton-mascota" >Selecciona tu Mokepon</button>
     </section>
+    
+    <section id="ver-mapa">
+        <h1 class="titulo">Recorre el mapa con tu Mokepon</h1>
+        <canvas id="mapa">
+            
+        </canvas>
+    </section>
 
     <section id = "partida" >
 
         <section id="selectionar-ataque">
-            <h2 id="subtitle">Elige tu ataque: </h2>
+            <h2 id="subtitle">Elige tus ataques: </h2>
 
             <div id="botones-ataque">
                 <!-- <button id="boton-fuego" class="boton-ataque" >Fuego 🔥</button>
@@ -91,14 +93,18 @@
                 <div id="resultado">
                     <p id="parrafo-resultado"></p>
                 </div>
+
+                <section id="reiniciar">
+                    <button id="boton-reiniciar">Reiniciar</button>
+                </section>
                 <div id="ataques">
                     <div id="ataque-jugador" class="ataque-jugadores">
-                        <p id="vidas-jugador">vidas: ♥️♥️♥️</p>
+                        <p id="vidas-jugador"></p>
                         <h3 id="titulo-mascota-jugador">Jugador</h3>
                     </div>
 
                     <div id="ataque-rival" class="ataque-jugadores">
-                        <p id="vidas-rival">vidas: ♥️♥️♥️</p>
+                        <p id="vidas-rival"></p>
                         <h3 id="titulo-mascota-rival">Rival</h3>
                     </div>
                 </div>
@@ -106,14 +112,13 @@
             </div>
             
 
-            <section id="reiniciar">
-                <button id="boton-reiniciar">Reiniciar</button>
-            </section>
+            
             
         </section> 
 
         
     </section>
+
     <script src="js/mokepon.js"></script>
 </body>
 </html>
