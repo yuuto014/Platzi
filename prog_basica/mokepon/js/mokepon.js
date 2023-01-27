@@ -47,31 +47,50 @@ let ataqueJugador = []
 let ataqueRival = []
 let victoriasJugador = 0
 let victoriasRival = 0
-let vidasJugador = 3
-let vidasRival = 3
+
+let lienzo = mapa.getContext("2d")
+let intervalo 
+let fondoMapa = new Image()
+fondoMapa.src = "https://static.platzi.com/media/user_upload/mokemap-ca51ea18-7ac8-492f-be96-6181d766a99d.jpg"
+
+
+//creacion y configuracion de mokepones
 
 class Mokepon{
-    constructor(nombre, imagen, vida, tipo){
+    constructor(nombre, imagen, altImage, vida, tipo){
         this.nombre = nombre
         this.imagen = imagen
+        this.altImage = altImage
         this.vida = vida
         this.tipo = tipo
         this.ataques = []
+        this.x = 20
+        this.y = 30
+        this.ancho = 80
+        this.alto = 80
+
+        this.mapaFoto = new Image()
+        this.mapaFoto.src = imagen
+
+        this.velocidadX = 0
+        this.velocidadY = 0
     }
+
+
 
 }
 
-let hipodoge = new Mokepon("Hipodoge","https://static.platzi.com/media/user_upload/hipodoge-76597a8f-782f-4beb-b9ab-53191d217f12.jpg", 3,"💧")
+let hipodoge = new Mokepon("Hipodoge","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_hipodoge_attack.png?raw=true","https://static.platzi.com/media/user_upload/hipodoge-76597a8f-782f-4beb-b9ab-53191d217f12.jpg", 3,"💧")
 
-let capipepo = new Mokepon("Capipepo","https://static.platzi.com/media/user_upload/capipepo-26b57f58-e390-416a-b126-0bcf8c8ef477.jpg",3,"🌱")
+let capipepo = new Mokepon("Capipepo","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_capipepo_attack.png?raw=true","https://static.platzi.com/media/user_upload/capipepo-26b57f58-e390-416a-b126-0bcf8c8ef477.jpg",3,"🌱")
 
-let ratigueya = new Mokepon("Ratigueya","https://static.platzi.com/media/user_upload/ratigueya-37a7cdfe-6921-467c-92f6-44bb7ae506e7.jpg",3,"🔥")
+let ratigueya = new Mokepon("Ratigueya","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_ratigueya_attack.png?raw=true","https://static.platzi.com/media/user_upload/ratigueya-37a7cdfe-6921-467c-92f6-44bb7ae506e7.jpg",3,"🔥")
 
-let langostelvis = new Mokepon("Langostelvis","https://static.platzi.com/media/user_upload/langostelvis-73e35035-de30-4f9c-9802-e31a26110bd0.jpg",3,"💧🔥")
+let langostelvis = new Mokepon("Langostelvis","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_langostelvis_attack.png?raw=true","https://static.platzi.com/media/user_upload/langostelvis-73e35035-de30-4f9c-9802-e31a26110bd0.jpg",3,"💧🔥")
 
-let tucapalma = new Mokepon("Tucapalma","https://static.platzi.com/media/user_upload/tucapalma-3263a05e-b205-49a0-943d-19590a3949e1.jpg",3,"💧🌱")
+let tucapalma = new Mokepon("Tucapalma","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_tucapalma_attack.png?raw=true","https://static.platzi.com/media/user_upload/tucapalma-3263a05e-b205-49a0-943d-19590a3949e1.jpg",3,"💧🌱")
 
-let pydos = new Mokepon("Pydos","https://static.platzi.com/media/user_upload/pydos-6e458237-73df-40fb-be7c-2d4b477be360.jpg",3,"🌱🔥")
+let pydos = new Mokepon("Pydos","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_pydos_attack.png?raw=true","https://static.platzi.com/media/user_upload/pydos-6e458237-73df-40fb-be7c-2d4b477be360.jpg",3,"🌱🔥")
 
 mokepones.push(hipodoge, capipepo, ratigueya, langostelvis, tucapalma, pydos)
 
@@ -124,10 +143,13 @@ pydos.ataques.push(
     {nombre: "Agua 💧",id : "boton-agua"}
 )
 
+//programando el juego...
+
 
 function iniciarJuego(){
      
     sectionPartida.style.display = "none"
+    sectionVerMapa.style.display = "none"
 
     mokepones.forEach((mokepon) =>{
         opcionDeMokepones = `
@@ -197,13 +219,80 @@ function seleccionarMascotaJugador(){
 
     if(mokeponJugador != undefined){
         sectionSeleccionMascota.style.display = "none"
-        sectionPartida.style.display = "flex"
+
+        // sectionPartida.style.display = "flex"
+        sectionVerMapa.style.display = "flex"
+        dibujarMapa()
         spanMascotaJugador.innerHTML = "Tu <br>"+ mokeponJugador.nombre
 
         seleccionarMascotaRival()
         imprimirAtaques()
     }
     sectionReinicar.style.display = "none"
+}
+
+function dibujarMapa(){
+
+    mapa.width = 640
+    mapa.height = 480
+
+    intervalo = setInterval(pintarMapa,100)
+
+    window.addEventListener("keydown",moverMokepon)
+    window.addEventListener("keyup",detenerMokepon)
+
+
+    
+}
+
+function pintarMapa(){
+    lienzo.clearRect(mokeponJugador.x,mokeponJugador.y, mokeponJugador.ancho, mokeponJugador.alto)
+
+    mokeponJugador.x += mokeponJugador.velocidadX
+    mokeponJugador.y += mokeponJugador.velocidadY
+
+    lienzo.drawImage(
+        fondoMapa,
+        0,
+        0,
+        mapa.width,
+        mapa.height
+    )
+
+    lienzo.drawImage(
+        mokeponJugador.mapaFoto,
+        mokeponJugador.x,
+        mokeponJugador.y,
+        mokeponJugador.ancho,
+        mokeponJugador.alto
+    )
+}
+
+function moverMokepon(direccion){
+
+    let tecla = direccion.keyCode
+
+    if(direccion == "arriba" || tecla == 38 || tecla == 87){
+        mokeponJugador.velocidadY = -5
+        mokeponJugador.velocidadX = 0
+    }else if( direccion == "derecha" || tecla == 39 || tecla == 68){
+        mokeponJugador.velocidadX = 5
+        mokeponJugador.velocidadY = 0
+    }else if( direccion == "izquierda" || tecla == 37 || tecla == 65){
+        mokeponJugador.velocidadX = -5
+        mokeponJugador.velocidadY = 0
+    }else if( direccion == "abajo" || tecla == 40 || tecla == 83){
+        mokeponJugador.velocidadY = 5
+        mokeponJugador.velocidadX = 0
+    }
+
+}
+
+function detenerMokepon(){
+    
+    mokeponJugador.velocidadY = 0
+    mokeponJugador.velocidadX = 0
+
 }
 
 function seleccionarMascotaRival(){
@@ -298,11 +387,7 @@ function combate(){
 
 function crearMensaje(artaque1,ataque2){
     
-    // let parrafo = document.createElement("p")
-    // parrafo.innerHTML = "Tu mascota ataco con " + ataqueJugador + ", la mascota rival ataco con "+ ataqueRival + " <strong>"+ resultadoCombate + "</strong>"
-
-    // let resultado  = " <strong>"+ resultadoCombate + "</strong>"
-
+  
     let nuevoAtaqueJugador = document.createElement("p")
 
     nuevoAtaqueJugador.innerHTML = artaque1
@@ -310,7 +395,6 @@ function crearMensaje(artaque1,ataque2){
     let nuevoAtaqueRival = document.createElement("p")
     nuevoAtaqueRival.innerHTML = ataque2
 
-    // divResultado.innerHTML = resultado
     divAtaqueJugador.appendChild(nuevoAtaqueJugador)
     divAtaqueRival.appendChild(nuevoAtaqueRival)
 

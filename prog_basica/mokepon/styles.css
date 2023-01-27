@@ -160,3 +160,17 @@ input{
     flex-direction: column;
     align-items: center;
 }
+
+#ver-mapa{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#mapa{
+    margin-top: 20px;
+    border:2px solid blueviolet;
+}
+#botonoes-movimiento{
+    display:flex
+}
