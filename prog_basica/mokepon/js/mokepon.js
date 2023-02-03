@@ -70,6 +70,7 @@ class Mokepon{
         this.ancho = 80
         this.alto = 80
 
+
         this.mapaFoto = new Image()
         this.mapaFoto.src = avatar
 
@@ -257,9 +258,6 @@ function dibujarMapa(){
 
     window.addEventListener("keydown",moverMokepon)
     window.addEventListener("keyup",detenerMokepon)
-
-
-    
 }
 
 function pintarMapa(){
@@ -280,6 +278,14 @@ function pintarMapa(){
     capipepoRival.pintarMokepon()
     ratigueyaRival.pintarMokepon()
     mokeponJugador.pintarMokepon()
+
+    
+
+    if(mokeponJugador.velocidadX !== 0 || mokeponJugador.velocidadY !== 0 ){
+           revisarColicion(hipodogeRival)
+            revisarColicion(capipepoRival)
+            revisarColicion(ratigueyaRival) 
+        }
 }
 
 function moverMokepon(direccion){
@@ -308,6 +314,35 @@ function detenerMokepon(){
     mokeponJugador.velocidadX = 0
 
 }
+
+function revisarColicion(enemigo){
+
+    let abajoMascota = mokeponJugador.y + mokeponJugador.alto
+    let arribaMascota = mokeponJugador.y 
+    let derechaMascota = mokeponJugador.x + mokeponJugador.ancho
+    let izquierdaMascota = mokeponJugador.x
+
+    let abajoRival = enemigo.y + enemigo.alto
+    let arribaRival = enemigo.y 
+    let derechaRival = enemigo.x + enemigo.ancho
+    let izquierdaRival = enemigo.x
+
+    
+    if ( 
+        abajoMascota < arribaRival ||
+        arribaMascota > abajoRival ||
+        derechaMascota < izquierdaRival ||
+        izquierdaMascota  > derechaRival
+        ){
+            return
+        }
+        else{
+            detenerMokepon()
+            alert("Que empiece la batalla contra "+enemigo.nombre+" rival")
+            
+        }
+}
+
 
 function seleccionarMascotaRival(){
     let numMokepones = mokepones.length - 1
