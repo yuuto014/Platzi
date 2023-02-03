@@ -243,8 +243,8 @@ function seleccionarMascotaJugador(){
         dibujarMapa()
         spanMascotaJugador.innerHTML = "Tu <br>"+ mokeponJugador.nombre
 
-        seleccionarMascotaRival()
-        imprimirAtaques()
+        // seleccionarMascotaRival()
+        // imprimirAtaques()
     }
     sectionReinicar.style.display = "none"
 }
@@ -339,6 +339,7 @@ function revisarColicion(enemigo){
         else{
             detenerMokepon()
             alert("Que empiece la batalla contra "+enemigo.nombre+" rival")
+            seleccionarMascotaRival(enemigo)
             
         }
 }
@@ -350,6 +351,16 @@ function seleccionarMascotaRival(){
     mokeponRival = mokepones[mascotaAleatoria]
 
     spanMascotaRival.innerHTML = mokeponRival.nombre + "<br> rival"
+}
+
+function seleccionarMascotaRival(rival){
+    mokeponRival = mokepones.find(mokepon => mokepon.nombre == rival.nombre)
+
+    spanMascotaRival.innerHTML = mokeponRival.nombre + "<br> rival"
+
+    imprimirAtaques()
+    sectionPartida.style.display = "flex"
+    sectionVerMapa.style.display = "none"
 }
 
 function imprimirAtaques(){
