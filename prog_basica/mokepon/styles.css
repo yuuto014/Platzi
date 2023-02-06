@@ -172,5 +172,10 @@ input{
     border:2px solid blueviolet;
 }
 #botonoes-movimiento{
-    display:flex
+    display:flex;
+    border-style: none;
+    cursor: pointer;
+}
+#botones-movimento:checked{
+    cursor:wait
 }

@@ -53,7 +53,7 @@ let intervalo
 let fondoMapa = new Image()
 fondoMapa.src = "https://static.platzi.com/media/user_upload/mokemap-ca51ea18-7ac8-492f-be96-6181d766a99d.jpg"
 
-const anchoMaxMapa = 720
+const anchoMaxMapa = 1080
 
 
 let anchoDelMapa = innerWidth - 80
@@ -79,8 +79,8 @@ class Mokepon{
         this.vida = vida
         this.tipo = tipo
 
-        this.ancho = 80
-        this.alto = 80
+        this.ancho = (mapa.width)/10
+        this.alto = (mapa.width)/10
 
         this.x = aleatorio(0,mapa.width -this.ancho)
         this.y = aleatorio(0,mapa.height -this.alto)
@@ -295,7 +295,7 @@ function pintarMapa(){
     ratigueyaRival.pintarMokepon()
     mokeponJugador.pintarMokepon()
 
-    
+
 
     if(mokeponJugador.velocidadX !== 0 || mokeponJugador.velocidadY !== 0 ){
            revisarColicion(hipodogeRival)
