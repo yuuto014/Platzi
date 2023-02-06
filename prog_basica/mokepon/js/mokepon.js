@@ -53,23 +53,39 @@ let intervalo
 let fondoMapa = new Image()
 fondoMapa.src = "https://static.platzi.com/media/user_upload/mokemap-ca51ea18-7ac8-492f-be96-6181d766a99d.jpg"
 
+const anchoMaxMapa = 720
+
+
+let anchoDelMapa = innerWidth - 80
+
+if(anchoDelMapa > anchoMaxMapa){
+    anchoDelMapa = anchoMaxMapa - 80
+}
+
+let alturaDelMapa = (anchoDelMapa*600) /800
+
+
+mapa.width = anchoDelMapa
+mapa.height =alturaDelMapa
 
 //creacion y configuracion de mokepones
 
 class Mokepon{
-    constructor(nombre, imagen, altImage, avatar, vida, tipo, x=20,y=30){
+    constructor(nombre, imagen, altImage, avatar, vida, tipo){
         this.nombre = nombre
         this.imagen = imagen
         this.altImage = altImage
         this.avatar = avatar
         this.vida = vida
         this.tipo = tipo
-        this.x = x
-        this.y = y
-        this.ataques = []
+
         this.ancho = 80
         this.alto = 80
 
+        this.x = aleatorio(0,mapa.width -this.ancho)
+        this.y = aleatorio(0,mapa.height -this.alto)
+        this.ataques = []
+        
 
         this.mapaFoto = new Image()
         this.mapaFoto.src = avatar
@@ -103,11 +119,14 @@ let tucapalma = new Mokepon("Tucapalma","https://github.com/platzi/curso-program
 
 let pydos = new Mokepon("Pydos","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_pydos_attack.png?raw=true","https://static.platzi.com/media/user_upload/pydos-6e458237-73df-40fb-be7c-2d4b477be360.jpg","https://imgur.com/LWkctTb.png",3,"🌱🔥")
 
-let hipodogeRival = new Mokepon("Hipodoge","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_hipodoge_attack.png?raw=true","https://static.platzi.com/media/user_upload/hipodoge-76597a8f-782f-4beb-b9ab-53191d217f12.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/hipodoge.png",3,"💧",115,350)
 
-let capipepoRival = new Mokepon("Capipepo","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_capipepo_attack.png?raw=true","https://static.platzi.com/media/user_upload/capipepo-26b57f58-e390-416a-b126-0bcf8c8ef477.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/capipepo.png",3,"🌱",200,30)
 
-let ratigueyaRival = new Mokepon("Ratigueya","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_ratigueya_attack.png?raw=true","https://static.platzi.com/media/user_upload/ratigueya-37a7cdfe-6921-467c-92f6-44bb7ae506e7.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/ratigueya.png",3,"🔥",545,270)
+
+let hipodogeRival = new Mokepon("Hipodoge","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_hipodoge_attack.png?raw=true","https://static.platzi.com/media/user_upload/hipodoge-76597a8f-782f-4beb-b9ab-53191d217f12.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/hipodoge.png",3,"💧")
+
+let capipepoRival = new Mokepon("Capipepo","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_capipepo_attack.png?raw=true","https://static.platzi.com/media/user_upload/capipepo-26b57f58-e390-416a-b126-0bcf8c8ef477.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/capipepo.png",3,"🌱")
+
+let ratigueyaRival = new Mokepon("Ratigueya","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_ratigueya_attack.png?raw=true","https://static.platzi.com/media/user_upload/ratigueya-37a7cdfe-6921-467c-92f6-44bb7ae506e7.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/ratigueya.png",3,"🔥")
 
 
 mokepones.push(hipodoge, capipepo, ratigueya, langostelvis, tucapalma, pydos)
@@ -250,9 +269,6 @@ function seleccionarMascotaJugador(){
 }
 
 function dibujarMapa(){
-
-    mapa.width = 640
-    mapa.height = 480
 
     intervalo = setInterval(pintarMapa,100)
 
