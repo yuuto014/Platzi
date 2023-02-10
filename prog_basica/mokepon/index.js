@@ -2,8 +2,28 @@ const express = require("express")
 
 const app = express()
 
-app.get("/", (req,res)=>{
+const jugadores = []
+
+class Jugador {
+    constructor(id){
+        this.id = id
+    }
+}
+
+app.get("/",(req,res)=>{
     res.send("hola")
+})
+
+app.get("/unirse", (req,res)=>{
+    const id = `${Math.random()}`
+
+    const jugador = new Jugador(id)
+
+    jugadores.push(jugador)
+
+    res.setHeader("Access-Control-Allow-Origin","*")
+
+    res.send(id)
 })
 
 

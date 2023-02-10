@@ -207,9 +207,22 @@ function iniciarJuego(){
     inputPydos = document.getElementById("Pydos")
 
     botonMascotaJugador.addEventListener("click",seleccionarMascotaJugador) 
-    
 
     botonRiniciar.addEventListener("click",reiniciarJuego)
+
+    unirseAlJuego()
+}
+
+function unirseAlJuego(){
+    fetch("http://localhost:8080/unirse")
+    .then((res)=>{
+        if(res.ok){
+            res.text()
+                .then((respuesta)=>{
+                    console.log(respuesta)
+                })
+        }
+    })
 }
 
 function aleatorio(min, max){
