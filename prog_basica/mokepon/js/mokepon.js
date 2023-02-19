@@ -1,3 +1,4 @@
+
 const sectionPartida =  document.getElementById("partida")
 const botonMascotaJugador = document.getElementById("boton-mascota")
 
@@ -13,7 +14,7 @@ const spanVidasJugador = document.getElementById("vidas-jugador")
 const spanVidasRival = document.getElementById("vidas-rival")
 
 const sectionMensajes = document.getElementById("parrafo-resultado")
-const divResultado = document.getElementById("parrafo-resultado")
+// const divResultado = document.getElementById("parrafo-resultado")
 const divAtaqueJugador = document.getElementById("ataque-jugador")
 const divAtaqueRival = document.getElementById("ataque-rival")
 
@@ -22,6 +23,7 @@ const sectionsubtitle =  document.getElementById("subtitle")
 const sectionVerMapa = document.getElementById("ver-mapa")
 const mapa = document.getElementById("mapa")
 
+let idJugador = null
 
 let botones = []
 
@@ -220,6 +222,7 @@ function unirseAlJuego(){
             res.text()
                 .then((respuesta)=>{
                     console.log(respuesta)
+                    idJugador = respuesta
                 })
         }
     })
@@ -277,8 +280,23 @@ function seleccionarMascotaJugador(){
 
         // seleccionarMascotaRival()
         // imprimirAtaques()
+
+        seleccionarMokepon(mokeponJugador) //mandar al backend
+
     }
     sectionReinicar.style.display = "none"
+}
+
+function seleccionarMokepon(mj){
+    fetch(`http://localhost:8080/mokepon/${idJugador}`,{
+        method:"post",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            mokepon : mj
+        })
+    })
 }
 
 function dibujarMapa(){
@@ -303,7 +321,10 @@ function pintarMapa(){
         mapa.height
     )
     
-    hipodogeRival.pintarMokepon()
+    hipodogeRival.pintarMokepon(mokeponJugador.x,mokeponJugador.y)
+
+    enviarPosicion(mokeponJugador.x,mokeponJugador.y)
+
     capipepoRival.pintarMokepon()
     ratigueyaRival.pintarMokepon()
     mokeponJugador.pintarMokepon()
@@ -315,6 +336,20 @@ function pintarMapa(){
             revisarColicion(capipepoRival)
             revisarColicion(ratigueyaRival) 
         }
+    
+}
+
+function enviarPosicion(x,y){
+    fetch(`http://localhost:8080/mokepon/${idJugador}/posicion`,{
+        method: "post",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            x,
+            y
+        })
+    })
 }
 
 function moverMokepon(direccion){
@@ -372,7 +407,6 @@ function revisarColicion(enemigo){
             
         }
 }
-
 
 function seleccionarMascotaRival(){
     let numMokepones = mokepones.length - 1
