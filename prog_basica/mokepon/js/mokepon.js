@@ -24,10 +24,13 @@ const sectionVerMapa = document.getElementById("ver-mapa")
 const mapa = document.getElementById("mapa")
 
 let idJugador = null
+let idRival = null
 
 let botones = []
 
 let mokepones = []
+
+let mokeponesRivales = []
 
 let opcionDeMokepones
 const contenedorMascotas = document.getElementById("mascotas")
@@ -81,6 +84,9 @@ class Mokepon{
         this.vida = vida
         this.tipo = tipo
 
+        this.idJugador = ""
+        this.idRival = ""
+
         this.ancho = (mapa.width)/10
         this.alto = (mapa.width)/10
 
@@ -105,8 +111,6 @@ class Mokepon{
             this.alto
             )
         }
-
-
 }
 
 let hipodoge = new Mokepon("Hipodoge","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_hipodoge_attack.png?raw=true","https://static.platzi.com/media/user_upload/hipodoge-76597a8f-782f-4beb-b9ab-53191d217f12.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/hipodoge.png",3,"💧")
@@ -124,11 +128,9 @@ let pydos = new Mokepon("Pydos","https://github.com/platzi/curso-programacion-ba
 
 
 
-let hipodogeRival = new Mokepon("Hipodoge","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_hipodoge_attack.png?raw=true","https://static.platzi.com/media/user_upload/hipodoge-76597a8f-782f-4beb-b9ab-53191d217f12.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/hipodoge.png",3,"💧")
-
-let capipepoRival = new Mokepon("Capipepo","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_capipepo_attack.png?raw=true","https://static.platzi.com/media/user_upload/capipepo-26b57f58-e390-416a-b126-0bcf8c8ef477.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/capipepo.png",3,"🌱")
-
-let ratigueyaRival = new Mokepon("Ratigueya","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_ratigueya_attack.png?raw=true","https://static.platzi.com/media/user_upload/ratigueya-37a7cdfe-6921-467c-92f6-44bb7ae506e7.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/ratigueya.png",3,"🔥")
+// let hipodogeRival = new Mokepon("Hipodoge","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_hipodoge_attack.png?raw=true","https://static.platzi.com/media/user_upload/hipodoge-76597a8f-782f-4beb-b9ab-53191d217f12.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/hipodoge.png",3,"💧")
+// let capipepoRival = new Mokepon("Capipepo","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_capipepo_attack.png?raw=true","https://static.platzi.com/media/user_upload/capipepo-26b57f58-e390-416a-b126-0bcf8c8ef477.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/capipepo.png",3,"🌱")
+// let ratigueyaRival = new Mokepon("Ratigueya","https://github.com/platzi/curso-programacion-basica/blob/59-detalles-finales-again/programar/mokepon/assets/mokepons_mokepon_ratigueya_attack.png?raw=true","https://static.platzi.com/media/user_upload/ratigueya-37a7cdfe-6921-467c-92f6-44bb7ae506e7.jpg","https://static.platzi.com/media/tmp/class-files/github/curso-programacion-basica/curso-programacion-basica-65-clases-methods/programar/mokepon/assets/ratigueya.png",3,"🔥")
 
 
 mokepones.push(hipodoge, capipepo, ratigueya, langostelvis, tucapalma, pydos)
@@ -280,7 +282,7 @@ function seleccionarMascotaJugador(){
 
         // seleccionarMascotaRival()
         // imprimirAtaques()
-
+        mokeponJugador.idJugador = idJugador
         seleccionarMokepon(mokeponJugador) //mandar al backend
 
     }
@@ -321,21 +323,20 @@ function pintarMapa(){
         mapa.height
     )
     
-    hipodogeRival.pintarMokepon(mokeponJugador.x,mokeponJugador.y)
+    // hipodogeRival.pintarMokepon(mokeponJugador.x,mokeponJugador.y)
 
     enviarPosicion(mokeponJugador.x,mokeponJugador.y)
 
-    capipepoRival.pintarMokepon()
-    ratigueyaRival.pintarMokepon()
+    mokeponesRivales.forEach((mokepon)=>{
+        mokepon.pintarMokepon()
+        revisarColicion(mokepon)
+    })
+    // capipepoRival.pintarMokepon()
+    // ratigueyaRival.pintarMokepon()
+    
+    
+
     mokeponJugador.pintarMokepon()
-
-
-
-    if(mokeponJugador.velocidadX !== 0 || mokeponJugador.velocidadY !== 0 ){
-           revisarColicion(hipodogeRival)
-            revisarColicion(capipepoRival)
-            revisarColicion(ratigueyaRival) 
-        }
     
 }
 
@@ -349,6 +350,27 @@ function enviarPosicion(x,y){
             x,
             y
         })
+    })
+    .then(function(res){
+        if(res.ok){
+            res.json()
+            .then(({enemigos})=>{
+                
+                
+                mokeponesRivales = enemigos.map((enemigo)=>{
+                    
+                    const nombreMokepon = enemigo.mokepon.nombre || ""
+                    let mokeponRival_ = seleccionarMascotaRival(nombreMokepon)
+                    // mokeponRival.pintarMokepon()
+                    mokeponRival.x = enemigo.x
+                    mokeponRival.y = enemigo.y
+                    mokeponRival.idJugador = enemigo.id
+
+                    return mokeponRival_
+                })
+
+            })
+        }
     })
 }
 
@@ -400,12 +422,16 @@ function revisarColicion(enemigo){
         ){
             return
         }
-        else{
-            detenerMokepon()
-            alert("Que empiece la batalla contra "+enemigo.nombre+" rival")
-            seleccionarMascotaRival(enemigo)
+        
+        mokeponJugador.idRival = enemigo.idJugador
+        enemigo.idRival = mokeponJugador.idJugador
+
+        detenerMokepon()
+        clearInterval(intervalo)
+        alert("Que empiece la batalla contra "+enemigo.nombre+" rival")
+        // seleccionarMascotaRival(enemigo)
+        imprimirAtaques()
             
-        }
 }
 
 function seleccionarMascotaRival(){
@@ -417,16 +443,44 @@ function seleccionarMascotaRival(){
 }
 
 function seleccionarMascotaRival(rival){
-    mokeponRival = mokepones.find(mokepon => mokepon.nombre == rival.nombre)
 
-    spanMascotaRival.innerHTML = mokeponRival.nombre + "<br> rival"
+    mokeponRival = mokepones.find(mokepon => mokepon.nombre == rival)
 
-    imprimirAtaques()
-    sectionPartida.style.display = "flex"
-    sectionVerMapa.style.display = "none"
+    return mokeponRival
+
+
+    // spanMascotaRival.innerHTML = mokeponRival.nombre + "<br> rival"
+
+    // imprimirAtaques()
+    // sectionPartida.style.display = "flex"
+    // sectionVerMapa.style.display = "none"
+}
+
+function seleccionarMokeponRival(nombreMokepon){
+    if(nombreMokepon === "Hipodoge"){
+        mokeponJugador = mokepones.find(mokepon => mokepon.nombre == inputHipodoge.id)
+    }else if(nombreMokepon === "Hipodoge"){
+        mokeponJugador = mokepones.find(mokepon => mokepon.nombre == inputCapipepo.id)
+    }
+    else if(nombreMokepon === "Capipepo"){
+        mokeponJugador = mokepones.find(mokepon => mokepon.nombre == inputRatigueya.id)
+    }
+    else if(inombreMokepon === "Ratihueya"){
+        mokeponJugador = mokepones.find(mokepon => mokepon.nombre == inputLangostelvis.id)
+    }
+    else if(nombreMokepon === "Hipodoge"){
+        mokeponJugador = mokepones.find(mokepon => mokepon.nombre == inputTucapalma.id)
+    }
+    else if(nombreMokepon === "Hipodoge"){
+        mokeponJugador = mokepones.find(mokepon => mokepon.nombre == inputPydos.id)
+    }
 }
 
 function imprimirAtaques(){
+    sectionPartida.style.display = "flex"
+    sectionVerMapa.style.display = "none"
+
+    opcionDeAtaques = ""
 
     mokeponJugador.ataques.forEach((ataque) =>{
         opcionDeAtaques = `
@@ -461,9 +515,26 @@ function secuenciaAtaque(){
                 boton.style.background = "#112f58"
                 boton.disabled = true
             }
-            ataqueAleatorioRival()
+            // ataqueAleatorioRival()
+            if(ataqueJugador.length === 5){
+                enviarAtaques()
+            }
+            
         })
     })
+}
+
+function enviarAtaques(){
+    fetch(`http://localhost:8080/mokepon/${idJugador}/ataques`,{
+        method: "post",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            ataques: ataqueJugador
+        })
+    })
+
 }
 
 function ataqueAleatorioRival(){
