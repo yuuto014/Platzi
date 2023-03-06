@@ -4,6 +4,7 @@ const { application } = require("express")
 
 const app = express()
 
+app.use(express.static("public"))
 app.use(cors())
 app.use(express.json()) //recibir peticiones post con JSON
 
@@ -35,7 +36,7 @@ class Mokepon{
 }
 
 app.get("/",(req,res)=>{
-    res.send("hola")
+    // res.send("hola")
 })
 
 app.get("/unirse", (req,res)=>{
@@ -103,6 +104,19 @@ app.post("/mokepon/:idJugador/ataques",(req,res)=>{
     console.log(jugadores)
 
     res.end()
+})
+
+app.get("/mokepon/:idJugador/ataques",(req,res)=>{
+    const idJugador = req.params.idJugador || ""
+
+    const jugador = jugadores.find((jugador) => jugador.id === idJugador)
+
+    console.log("Llamando al jugador : "+ jugador)
+
+    res.send({
+        ataques: jugador.ataques || []
+    })
+
 })
 
 app.listen(8080,()=>{

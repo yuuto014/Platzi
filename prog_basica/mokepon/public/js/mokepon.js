@@ -53,21 +53,23 @@ let ataqueRival = []
 let victoriasJugador = 0
 let victoriasRival = 0
 
+// const ruta = "localhost:8080"
+const ruta = "192.168.1.8:8080"
+
 let lienzo = mapa.getContext("2d")
 let intervalo 
 let fondoMapa = new Image()
 fondoMapa.src = "https://static.platzi.com/media/user_upload/mokemap-ca51ea18-7ac8-492f-be96-6181d766a99d.jpg"
 
-const anchoMaxMapa = 1080
+const anchoMaxMapa = 350
 
-
-let anchoDelMapa = innerWidth - 80
+let anchoDelMapa = window.innerWidth - 20
 
 if(anchoDelMapa > anchoMaxMapa){
     anchoDelMapa = anchoMaxMapa - 80
 }
 
-let alturaDelMapa = (anchoDelMapa*600) /800
+let alturaDelMapa = anchoDelMapa*600 /800
 
 
 mapa.width = anchoDelMapa
@@ -87,8 +89,8 @@ class Mokepon{
         this.idJugador = ""
         this.idRival = ""
 
-        this.ancho = (mapa.width)/10
-        this.alto = (mapa.width)/10
+        this.ancho = 40//(mapa.width)/10
+        this.alto = 40//(mapa.width)/10
 
         this.x = aleatorio(0,mapa.width -this.ancho)
         this.y = aleatorio(0,mapa.height -this.alto)
@@ -218,7 +220,7 @@ function iniciarJuego(){
 }
 
 function unirseAlJuego(){
-    fetch("http://localhost:8080/unirse")
+    fetch(`http://${ruta}/unirse`)
     .then((res)=>{
         if(res.ok){
             res.text()
@@ -290,7 +292,7 @@ function seleccionarMascotaJugador(){
 }
 
 function seleccionarMokepon(mj){
-    fetch(`http://localhost:8080/mokepon/${idJugador}`,{
+    fetch(`http://${ruta}/mokepon/${idJugador}`,{
         method:"post",
         headers:{
             "Content-Type": "application/json"
@@ -341,7 +343,8 @@ function pintarMapa(){
 }
 
 function enviarPosicion(x,y){
-    fetch(`http://localhost:8080/mokepon/${idJugador}/posicion`,{
+    console.log("Enviando posicion")
+    fetch(`http://${ruta}/mokepon/${idJugador}/posicion`,{
         method: "post",
         headers:{
             "Content-Type": "application/json"
@@ -362,6 +365,7 @@ function enviarPosicion(x,y){
                     const nombreMokepon = enemigo.mokepon.nombre || ""
                     let mokeponRival_ = seleccionarMascotaRival(nombreMokepon)
                     // mokeponRival.pintarMokepon()
+                    console.log(nombreMokepon)
                     mokeponRival.x = enemigo.x
                     mokeponRival.y = enemigo.y
                     mokeponRival.idJugador = enemigo.id
@@ -425,6 +429,7 @@ function revisarColicion(enemigo){
         
         mokeponJugador.idRival = enemigo.idJugador
         enemigo.idRival = mokeponJugador.idJugador
+        idRival = mokeponJugador.idRival
 
         detenerMokepon()
         clearInterval(intervalo)
@@ -525,7 +530,7 @@ function secuenciaAtaque(){
 }
 
 function enviarAtaques(){
-    fetch(`http://localhost:8080/mokepon/${idJugador}/ataques`,{
+    fetch(`http://${ruta}/mokepon/${idJugador}/ataques`,{
         method: "post",
         headers:{
             "Content-Type": "application/json"
@@ -535,7 +540,26 @@ function enviarAtaques(){
         })
     })
 
+    intervalo = setInterval(obtenerAtaques,100)
+
 }
+
+function obtenerAtaques(){
+    fetch(`http://${ruta}/mokepon/${idRival}/ataques`)
+    .then((res)=>{
+        if(res.ok){
+            res.json()
+            .then(({ataques})=>{
+                if(ataques.length == 5){
+
+                    ataqueRival = ataques
+                    combate()
+                }
+            })
+        }
+    })
+}
+/* funciones descartadas por el combate contra otros jugadores
 
 function ataqueAleatorioRival(){
     let tamanoAtaquesEnemigo = mokeponRival.ataques.length-1
@@ -552,8 +576,11 @@ function iniciarBatalla(){
         combate()
     }
 }
+*/
 
 function combate(){
+
+    clearInterval(intervalo)
 
     for(let i=0; i<ataqueJugador.length; i++ ){
         if(ataqueJugador[i] == ataqueRival[i]){
